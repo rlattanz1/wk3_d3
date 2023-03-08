@@ -1,5 +1,12 @@
+class WordChainer
+attr_reader
 
 
-class WordChains
+    def initialize(dictionary)
+        @dictionary = dictionary
+
+    end
+
+
 
 end
