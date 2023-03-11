@@ -56,9 +56,6 @@ attr_reader :dictionary
     @current_words = new_current_words
     end
 
-    def
-
-    end
 
 
 end
