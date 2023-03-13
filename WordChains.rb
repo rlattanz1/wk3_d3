@@ -25,38 +25,37 @@ attr_reader :dictionary
     end
 
     def run(source, target)
+        @current_words = [source]
+        @all_seen_words = {source => nil}
 
-        @current_words = Set.new([source])
-        @all_seen_words = Set.new([source])
-
-        until @current_words.empty? || @all_seen_words.include?(target)
-        #     new_current_words = Set[]
-        #     @current_words.each do |current_word|
-        #         adjacent_words(current_word).each do |adj_word|
-        #             next if @all_seen_words.include?(adj_word)
-        #             @all_seen_words << adj_word
-        #             new_current_words << adj_word
-        #         end
-        #     end
-        # @current_words = new_current_words
-        explore_current_words
+        until @current_words.empty? || @all_seen_words.key?(target)
+            explore_current_words
         end
+        @all_seen_words
         build_path(target)
     end
 
     def explore_current_words
-        new_current_words = Set[]
+        new_current_words = []
         @current_words.each do |current_word|
             adjacent_words(current_word).each do |adj_word|
-                next if @all_seen_words.include?(adj_word)
-                @all_seen_words << adj_word
+                next if @all_seen_words.key?(adj_word)
+                @all_seen_words[adj_word] = current_word
                 new_current_words << adj_word
             end
         end
     @current_words = new_current_words
     end
 
-
+    def build_path(target)
+        path_arr = []
+        current_word = target
+        until current_word.nil?
+            path_arr << current_word
+            current_word = @all_seen_words[current_word]
+        end
+        path_arr.reverse
+    end
 
 end
 
@@ -65,6 +64,5 @@ if $PROGRAM_NAME == __FILE__
 W = WordChainer.new('dictionary.txt')
 # p W.dictionary
 # p W.adjacent_words('duck')
-p W.run('duck', 'dust')
-
+p W.run('duck', 'bust')
 end
